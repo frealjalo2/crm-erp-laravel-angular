@@ -19,7 +19,7 @@ class RolePermissionController extends Controller
             "total" => $roles->total(),
             "roles" => $roles->map(function($role){
                 $role->permission_pluck = $role->permissions->pluck("name");
-                $role->created_at = $role->created_at->format("Y-m-d h:i A");
+                $role->created_format_at = $role->created_at->format("Y-m-d h:i A");
                 return $role;
             }),
         ]);

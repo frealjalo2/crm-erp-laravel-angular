@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CreateRolesComponent } from '../create-roles/create-roles.component';
+import { RolesService } from '../service/roles.service';
 
 @Component({
   selector: 'app-list-roles',
@@ -9,12 +10,27 @@ import { CreateRolesComponent } from '../create-roles/create-roles.component';
 })
 export class ListRolesComponent implements OnInit {
 
-  constructor(public modalSevice: NgbModal){
+  search: string = '';
+  roles: any[] = [];
+
+  isLoading: any;
+
+  constructor(
+    public modalSevice: NgbModal,
+    public rolesService: RolesService,
+  ){
 
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.listRoles()
+    this.isLoading = this.rolesService.isLoading$;
+  }
+
+  listRoles(page: number = 1){
+    this.rolesService.listRoles(page, this.search).subscribe((resp: any) => {
+      this.roles = resp.roles;
+    });
   }
 
   createRol() {

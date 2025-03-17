@@ -23,9 +23,20 @@ export class RolesService {
   // http://127.0.0.1:8000/api
   registerRole(data:any){
     this.isLoadingSubject.next(true);
-    let url = URL_SERVICES + "/roles";
+    let url = `${URL_SERVICES}/roles`;
     let headers = new HttpHeaders({'Authorization': `Bearer ${this.authservice.token}`})
     return this.http.post(url, data, {
+      headers
+    }).pipe(
+      finalize(()=> this.isLoadingSubject.next(false))
+    );
+  }
+
+  listRoles(page: number = 1, search: string = ''){
+    this.isLoadingSubject.next(true);
+    let url = `${URL_SERVICES}/roles?page=${page}&search=${search}`;
+    let headers = new HttpHeaders({'Authorization': `Bearer ${this.authservice.token}`})
+    return this.http.get(url, {
       headers
     }).pipe(
       finalize(()=> this.isLoadingSubject.next(false))
